@@ -1,0 +1,103 @@
+{% extends "product/base.html" %}
+{% block content%}
+
+<h1 class="my-4" style="color:#1cc88a;"><i class="fas fa-crosshairs"></i><b> Search Results:</b></h1>
+
+<div class="row">
+      <div class="col-lg-3">
+        <div class="card">
+          <div class="card-header">Searh With Filters</div>
+          <form action=/search/ novalidate>
+          <div class="card-body">
+            <div class="form-group">
+              <label>Search for... </label>
+              <input type="text" class="form-control post_search_text" name="q" placeholder="Enter a keyword" />
+            </div>
+            
+            <div class="Categories my-2">
+              <label>Categories: </label>
+              <select class="form-control post_max" name='cate'>
+                <option value="All">All</option>
+                <option value="len">Lens</option>
+                <option value="dsl">DSLR</option>
+                <option value="acc">Accesory</option>
+                <option value="oth">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+                <label>Postcode: </label>
+                <input type="text" class="form-control post_search_text" name="p" placeholder="Enter a postcode" />
+              </div>
+              {% if user.is_authenticated%}
+              <div class="Categories my-2">
+              <label>Range: </label>
+              <select class="form-control post_max" name='rang'>
+                <option value="0">None</option>>
+                <option value="5">5km</option>
+                <option value="10">10km</option>
+                <option value="20">20km</option>
+                <option value="50">50km</option>
+                <option value="100">100km</option>
+              </select>
+            </div>
+            {% endif %}
+            <input type = "submit" value = "SEARCH" class = "btn btn-primary btn-block post_search_submit my-4" />
+          </div>
+          </form>
+        </div>
+
+      </div>
+
+<div class="col-lg-9">
+  <div class="row">
+    {% for product in search_products %}
+      <div class="col-lg-4 col-sm-6 mb-4">
+        <div class="card h-100">
+          <a href="{% url 'product-detail' product.id %}"><img class="card-img-top" src="{{ product.image.url }}" width="400" height="250" alt=""></a>
+          <div class="card-body">
+            <h4 class="card-title">
+              <a href="{% url 'product-detail' product.id %}" style="color:#fd7e14;">{{ product.title }}</a>
+            </h4>
+            <p class="card-text">Category: {{ product.category}}</p>
+            <p class="card-text">Brand: {{ product.brand}}</p>
+            <p class="card-text">Price for Rent: ${{ product.price}} / Week</p>
+
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+</div>
+  <!-- /.row -->
+
+    {% comment %}
+    <!-- Pagination -->
+    <ul class="pagination justify-content-center">
+        {% if is_paginated %}
+          {% if page_obj.has_previous %}
+            <a class="btn btn-outline-primary mb-4 mx-2"  href="?page=1"> First Page</a>
+            <a class="btn btn-outline-primary mb-4 mx-3"  href="?page={{ page_obj.previous_page_number }}"> Prev </a>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+
+            {% if page_obj.number == num %}
+              <a class="btn btn-primary mb-4 mx-2"  href="?page={{ num }}">{{ num }}</a>
+
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <a class="btn btn-outline-primary mb-4 mx-2"  href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <a class="btn btn-outline-primary mb-4 mx-3"  href="?page={{ page_obj.next_page_number }}"> Next </a>
+            <a class="btn btn-outline-primary mb-4 mx-2"  href="?page={{ page_obj.paginator.num_pages }}"> Last Page</a>
+          {% endif %}
+        {% endif %}
+    </ul>
+    {% endcomment %}
+{% endblock content%}

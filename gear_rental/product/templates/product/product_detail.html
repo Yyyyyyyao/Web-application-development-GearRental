@@ -1,0 +1,433 @@
+{% load static %}
+<html>
+<head>
+
+<title>{{object.title}}:{{object.postcode}} </title>
+  <link href="{%static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/Main.css' %}" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+  <!-- email -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+</head>
+<body class="page-top">
+  <div id="wrapper">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'product-home' %}">
+        <div class="sidebar-brand-icon rotate-n-15">
+          <i class="fas fa-camera"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3" >Gear Rental</div>
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - HOME -->
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'product-home' %}">
+          <i class="fas fa-home"></i>
+          <span style="font-size: 1em;">HOME</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Management
+      </div>
+
+      <!-- Nav Item - Post -->
+      <li class="nav-item">
+        {% if user.is_authenticated %}
+        <a class="nav-link" href="{% url 'product-create' %}">      
+      {% else %}
+        <a class="nav-link" href="{% url 'login' %}">       
+      {% endif %}
+          <i class="fas fa-camera-retro"></i>
+          <span style="font-size: 1em;">Create Product Post</span></a>
+      </li>
+
+      <!-- Nav Item - Warehouse -->
+      <li class="nav-item">
+        {% if user.is_authenticated %}
+           <a class="nav-link" href="{% url 'user-products' user.username%}">     
+        {% else %}
+           <a class="nav-link" href="{% url 'login' %}">        
+        {% endif %}
+          <i class="fas fa-warehouse"></i>
+          <span style="font-size: 1em;">My Warehouse</span></a>
+      </li>
+
+      <!-- Nav Item - Favourites -->
+      <li class="nav-item">
+        {% if user.is_authenticated %}
+        <a class="nav-link" href="{% url 'favourite-products' user.username %}">      
+      {% else %}
+        <a class="nav-link" href="{% url 'login' %}">       
+      {% endif %}
+          <i class="fas fa-heart"></i>
+          <span style="font-size: 1em;">My Favourites</span></a>
+      </li>
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Community
+      </div>
+
+      <!-- Nav Item - Gallery -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'gallery' %}">
+          <i class="fas fa-image"></i>
+          <span style="font-size: 1em;">Gallery</span></a>
+      </li>
+
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Gear-Rental
+      </div>
+
+      <!-- Nav Item - About -->
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'product-about' %}">
+          <i class="far fa-question-circle"></i>
+          <span style="font-size: 1em;">About Us</span></a>
+      </li>
+
+    </ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Topbar Search -->
+          <form action=/search/ novalidate>
+            <div class="input-group">
+              <input type="text" size="100" class="form-control post_search_text" name="q" placeholder="Search for..." />
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="button">
+                  <i class="fas fa-search fa-sm"></i>
+                </button>
+              </div>
+             </div> 
+          </form>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                  <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+            
+            {% if user.is_authenticated %}
+              <a class="nav-item nav-link" href="{% url 'profile' %}">My Profile</a>
+                <div class="topbar-divider d-none d-sm-block"></div>
+              <a class="nav-item nav-link" href="{% url 'logout' %}">Log out</a>
+            {% else %}
+                <a class="nav-item nav-link" href="{% url 'login' %}">Log In</a>
+                <div class="topbar-divider d-none d-sm-block"></div>
+                <a class="nav-item nav-link" href="{% url 'register' %}">Sign Up</a>
+            {% endif %}
+      
+          </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container">
+            <div class="w3-container" id="camera">
+          <h2 class="w3-text-black">{{ object.title }}   
+            <!-- if faved display, otherwise no red heart -->
+    
+          {% if object.author == user %}
+            {% comment %}
+            <div style="float: right;">
+              <button class="button_product" onclick="location.href='{% url 'product-update' object.id %}'" type="button">
+                Update</button>
+              <button class="button_product" onclick="location.href='{% url 'product-delete' object.id %}'" type="button"
+              style="background: linear-gradient(to bottom, #fa8072 0%,#ff0000 100%); border-bottom: 4px solid #ff6347;">Delete</button>
+            </div>
+            {% endcomment %}
+
+            <button class="btn btn-outline-danger" onclick="location.href='{% url 'product-delete' object.id %}'" type="button" style="float: right;">Delete</button>
+            <a class="btn btn-outline-secondary"  href="{% url 'product-update' object.id %}" style="float: right; margin-right: 10px;">Update</a>
+            
+          {% endif %}</h2>
+
+          <div class="w3-display-container mySlides">
+            <img src= "{{ object.image.url }}" class="w3-round" style="width:100%;height:512px;margin-bottom:-6px">
+            <div class="w3-display-bottomleft w3-container w3-black">
+              <!-- <p>Living Room</p> -->
+            </div>
+          </div>
+          <div class="w3-display-container mySlides">
+            <img src="{{ object.image2.url }}" class="w3-round" style="width:100%;height:512px;margin-bottom:-6px">
+            <div class="w3-display-bottomleft w3-container w3-black">
+              <!-- <p>Dining Room</p> -->
+            </div>
+          </div>
+          <div class="w3-display-container mySlides">
+            <img src="{{ object.image3.url }}" class="w3-round"  style="width:100%;height:512px;margin-bottom:-6px">
+            <div class="w3-display-bottomleft w3-container w3-black">
+              <!-- <p>Bedroom</p> -->
+            </div>
+          </div>
+          <div class="w3-display-container mySlides">
+            <img src="{{ object.image4.url }}" class="w3-round" style="width:100%;height:512px;margin-bottom:-6px">
+            <div class="w3-display-bottomleft w3-container w3-black">
+              <!-- <p>Living Room II</p> -->
+            </div>
+          </div>
+      </div>
+
+
+            <div class="w3-row-padding w3-section">
+              <div class="w3-col s3">
+                <img class="demo w3-opacity w3-hover-opacity-off" class="w3-round" src="{{ object.image.url }}" style="width:100%;height:100px;cursor:pointer" onclick="currentDiv(1)" title="Living room">
+              </div>
+              <div class="w3-col s3">
+                <img class="demo w3-opacity w3-hover-opacity-off" class="w3-round" src="{{ object.image2.url }}" style="width:100%;height:100px;cursor:pointer" onclick="currentDiv(2)" title="Dining room">
+              </div>
+              <div class="w3-col s3">
+                <img class="demo w3-opacity w3-hover-opacity-off" src="{{ object.image3.url }}" style="width:100%;height:100px;cursor:pointer" onclick="currentDiv(3)" title="Bedroom">
+              </div>
+              <div class="w3-col s3">
+                <img class="demo w3-opacity w3-hover-opacity-off" src="{{ object.image4.url }}" style="width:100%;height:100px;cursor:pointer" onclick="currentDiv(4)" title="Second Living Room">
+              </div>
+            </div>
+
+            <h4><strong>Information</strong></h4>
+                <div class="w3-row w3-large">
+                  <div class="w3-col s6">
+                    <p><i class="fa fa-fw fa-camera"></i> {{ object.category }}</p>
+                    <p><i class="fa fa-fw fa-usd"></i> {{ object.price }}</p>
+                  </div>
+                  <div class="w3-col s6">
+                    
+                      {%if is_fav %}
+                      <p><a target="_self" href="{% url 'add-favourite-products' user object.id%}">
+                              <i class="fa fa-heart">
+                          </i> Added
+                          </a>
+                        </p>
+                      {% else %}
+
+                        <p><a target="_self" href="{% url 'add-favourite-products' user object.id%}">
+
+                            <i class="fa fa-fw fa-heart-o">
+                            </i> Add to Favorite
+                            </a>
+                          </p>
+                      {% endif %}
+                    <p><i class="fa fa-fw fa-clock-o"></i> {{ object.availability|yesno:"Available,UnAvailable" }}</p>
+                  </div>
+                </div>
+            <hr>
+
+            <h4><strong>Description</strong></h4>
+            <p>  {{ object.description }} </p>
+            <hr>
+            <h2>Contact</h2>
+
+              {% comment %}
+                <div class="w3-row w3-large">
+                  <div class="w3-col s6">
+                    <p ><img src="{{ object.author.profile.image.url }}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
+                    <p><i class="fa fa-user-circle" style="width:30px"></i> <a class="mr-2" href="{% url 'user-products' object.author.username %}">{{ object.author }}</a></p>
+                    
+                  </div>
+                  <div class="w3-col s6">
+                    <p><i class="fa fa-map-marker" style="width:30px" ></i> <span id="post-code">{{object.postcode}}</span> </p>
+                    <p><i class="fa fa-phone" style="width:30px"></i> {{ object.author.profile.phone_number }} </p>
+                    <p><i class="fa fa-envelope" style="width:30px"> </i> {{object.author.email}}</p>
+                  </div>
+                </div>
+              {% endcomment %}
+            
+          
+            <hr>
+            <div id="map" style="width:100%;height:400px;"> </div>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWRwG19yfJgdzuRl4-g-4P9fe4_3N4NLw&libraries=places&callback=initMap" async defer></script>
+
+
+            <!-- email -->
+
+            <div class="w3-container w3-padding-64 w3-theme-l5" id="contact">
+              <div class="w3-row">
+                <div class="w3-col m5">
+                <div class="w3-padding-16"><span class="w3-xlarge w3-border-teal w3-bottombar">Contact Me</span></div>
+                  <p><i class="fa fa-map-marker w3-text-teal w3-xlarge"></i> Username: {{object.author.username}}</p>
+                  <p><i class="fa fa-map-marker w3-text-teal w3-xlarge"></i> Postcode: {{object.postcode}}</p>
+                  <p><i class="fa fa-phone w3-text-teal w3-xlarge"></i> Phone: {{object.author.profile.phone_number}} </p>
+                  <p><i class="fa fa-envelope-o w3-text-teal w3-xlarge"></i>  {{object.author.email}} </p>
+                </div>
+                <div class="w3-col m7">
+                  <form class="w3-container w3-card-4 w3-padding-16 w3-white" action= "mailto:{{object.author.email}}" method="post" target="_blank">
+                  <div class="w3-section">      
+                    <label>My Name</label>
+                    <input class="w3-input" type="text" name="Name" required>
+                  </div>
+                  <div class="w3-section">      
+                    <label>My Email</label>
+                    <input class="w3-input" type="text" name="Email" required>
+                  </div>
+                  <div class="w3-section">      
+                    <label>Message</label>
+                    <input class="w3-input" type="text" name="Message" required>
+                  </div>  
+                  <button type="submit" class="w3-button w3-right w3-theme">Send</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
+
+        </div>
+         <!-- /.container-fluid -->
+        <!-- End of Main Content -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+</div>
+
+
+<script>
+  
+  // Slideshow Apartment Images
+  var slideIndex = 1;
+  showDivs(slideIndex);
+  
+  function plusDivs(n) {
+    showDivs(slideIndex += n);
+  }
+  
+  function currentDiv(n) {
+    showDivs(slideIndex = n);
+  }
+  
+  function showDivs(n) {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("demo");
+    if (n > x.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = x.length}
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
+    }
+    x[slideIndex-1].style.display = "block";
+    dots[slideIndex-1].className += " w3-opacity-off";
+  }
+</script>
+
+
+<script>
+    var map;
+    var service;
+    var infowindow;
+    var zip = document.getElementsByTagName("TITLE")[0].text;
+    var sp =zip.split(":")
+    var code = sp[1]
+    // var zip = document.getElementById("postcode").text;
+    // var zip = document.getElementsByTagName("SPAN")[0].content;
+    // document.getElementById("demo").innerHTML = zip;
+      function initMap() {
+        var sydney = new google.maps.LatLng(-33.867, 151.195);
+
+        infowindow = new google.maps.InfoWindow();
+
+        map = new google.maps.Map(
+            document.getElementById('map'), {center: sydney, zoom: 15});
+
+        var request = {
+          query: 'postcode:' + code,
+          fields: ['name', 'geometry'],
+        };
+
+        service = new google.maps.places.PlacesService(map);
+
+        service.findPlaceFromQuery(request, function(results, status) {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i < results.length; i++) {
+              createMarker(results[i]);
+            }
+
+            map.setCenter(results[0].geometry.location);
+          }
+        });
+      }
+
+      function createMarker(place) {
+        var circleR = new google.maps.Circle({
+        strokeColor: '#858796',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#858796',
+        fillOpacity: 0.5,
+        map: map,
+        center: place.geometry.location,
+        radius: 700
+      });
+
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(place.name);
+          infowindow.open(map, this);
+        });
+      }
+</script>
+
+</body>
+</html>
